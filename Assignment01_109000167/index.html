@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="eng">
+	<head>
+		<meta charset="UTF-8" />
+		<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge" /> -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Web Canvas</title>
+		<link rel="stylesheet" href="index.css" />
+		<script src="index.js"></script>
+	</head>
+	<body>
+		<div class="options">
+			<div>
+                <!-- color selector-->
+                <!-- value: default color as black -->
+				<input type="color" value="#000000" id="color" style="width: 50px; height: 50px;"/>
+			</div>
+			<div>
+                <!-- brush-->
+				<!-- value: default size -->
+				<input type="range" value="5" min="1" max="50" id="brush" />
+			</div>
+            <div>
+                <!-- eraser-->
+				<input type="button" id="eraser" style="width: 50px; height: 50px;
+                    background-image: url('pic/clear.png'); background-size: cover;" />
+			</div>
+            <div>
+                <!-- typingText-->
+				<input type="button" id="typingText" style="width: 50px; height: 50px;
+                    background-image: url('pic/clear.png'); background-size: cover;" />
+			</div>
+			<div>
+                <!-- clear all-->
+				<input type="button" id="clear" style="width: 50px; height: 50px;
+                    background-image: url('pic/clear.png'); background-size: cover;" />
+			</div>
+            <div>
+                <!-- draw shape-->
+				<input type="button" id="shape" style="width: 50px; height: 50px;
+                    background-image: url('pic/clear.png'); background-size: cover;" />
+			</div>
+            <div>
+                <!-- undo-->
+				<input type="button" id="undo" style="width: 50px; height: 50px;
+                    background-image: url('pic/clear.png'); background-size: cover;" />
+			</div>
+            <div>
+                <!-- redo-->
+				<input type="button" id="redo" style="width: 50px; height: 50px;
+                    background-image: url('pic/clear.png'); background-size: cover;" />
+			</div>
+            <div>
+                <!-- upload image-->
+				<input type="button" id="upload" style="width: 50px; height: 50px;
+                    background-image: url('pic/clear.png'); background-size: cover;" />
+			</div>
+            <div>
+                <!-- download image-->
+				<input type="button" id="download" style="width: 50px; height: 50px;
+                    background-image: url('pic/clear.png'); background-size: cover;" />
+			</div>
+		</div>
+        <canvas width="1000" height="500" id="canvas"></canvas>
+	</body>
+</html>

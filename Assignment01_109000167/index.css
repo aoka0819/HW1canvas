@@ -1,0 +1,28 @@
+.options {
+    float: right;
+    outline: 0;
+}
+
+.options button {
+	border: 0;
+	padding: 10px 20px;
+	/* 加个圆角 */
+	border-radius: 3px;
+	color: #fff;
+	background-color: #0d53ff;
+	/* 鼠标移入变小手 */
+	cursor: pointer;
+}
+/* 给画布一个边框 */
+canvas {
+    float: left;
+	margin-top: 40px;
+    margin-left: 40px;
+	border: 1px solid #000;
+    background-image: url(pic/paper.jpg);
+}
+
+body {
+    background-image: url(pic/background.jpg);
+    background-size: cover;
+}
