@@ -41,14 +41,33 @@ canvas.onmouseup = function () {
     painting = false;
 };*/
 
+var painting = true;
+var eraserEnabled = false;
+
+function buttonOnClick (id) {
+	if(id == 'brush') {
+		painting = true;
+		eraserEnabled = false;
+		let display = document.getElementById("brush").style.display;
+		document.getElementById("brush").style.display = (display == "block") ? "none" : "block";
+		document.getElementById("eraser").style.display = "none";
+	} else if(id == 'eraser') {
+		eraserEnabled = true;
+		let display = document.getElementById("eraser").style.display;
+		document.getElementById("eraser").style.display = (display == "block") ? "none" : "block";
+		document.getElementById("brush").style.display = "none";
+	}
+}
+
 window.addEventListener("load", () => {
-	// 获取颜色元素
+	// get color and size selected
 	const color = document.querySelector("#color");
-	// 获取range元素
 	const brush = document.querySelector("#brush");
+	const eraser = document.querySelector("#eraser");
 	// 设置初始的画笔颜色和粗细 画图时用的
 	let colorValue = color.value,
-		brushSize = brush.value;
+		brushSize = brush.value,
+		eraserSize = eraser.value;
 	// 给颜色选择器加onchange事件 以此来更新颜色
 	color.addEventListener("change", () => {
 		// 变化之后就会改变value值
@@ -58,7 +77,9 @@ window.addEventListener("load", () => {
 	brush.addEventListener("change", () => {
 		brushSize = brush.value;
 	});
-
+	eraser.addEventListener("change", () => {
+		eraserSize = eraser.value;
+	});
 	// ok现在开始画图了
 	// 先获取画布
 	const cvs = document.querySelector("canvas");
@@ -82,7 +103,7 @@ window.addEventListener("load", () => {
 		// 可以开始绘图了
 		// 先设置好绘图的画笔颜色和粗细
 		ctx.strokeStyle = colorValue;
-		ctx.lineWidth = brushSize;
+		ctx.lineWidth = (eraserEnabled) ? eraserSize : brushSize;
 		// 这里再设置一个属性
 		// 绘制的图像是圆角的
 		ctx.lineCap = "round";
@@ -100,11 +121,14 @@ window.addEventListener("load", () => {
 		const mouseY = e.pageY - top;
 		// OK 这样就可以保证按下在开始画了
 		if (flag) {
-			// 然后就开始连接线条了
-			// 这个用来确定要去的位置
-			ctx.lineTo(mouseX, mouseY);
-			// 封闭连接
-			ctx.stroke();
+			if(eraserEnabled) {
+				console.log("lineWidth now:", ctx.lineWidth);
+				ctx.clearRect(mouseX, mouseY, ctx.lineWidth, ctx.lineWidth);
+			}
+			else {
+				ctx.lineTo(mouseX, mouseY);
+				ctx.stroke();
+			}
 		}
 	});
 	// ok 现在我们需要鼠标按下才绘图

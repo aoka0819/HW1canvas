@@ -2,7 +2,6 @@
 <html lang="eng">
 	<head>
 		<meta charset="UTF-8" />
-		<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge" /> -->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Web Canvas</title>
 		<link rel="stylesheet" href="index.css" />
@@ -19,48 +18,58 @@
                 <!-- brush-->
 				<!-- value: default size -->
 				<input type="button" id="btnOfBrush" style="width: 50px; height: 50px;
-                    background-image: url('pic/brush.png'); background-size: cover;" />
-				<input type="range" value="5" min="1" max="50" id="brush" />
+                    background-image: url('pic/brush.png'); background-size: cover;" 
+					onclick="buttonOnClick('brush')" />
+				<input type="range" value="10" min="1" max="50" id="brush" style="display: none;" />
 			</div>
             <div>
                 <!-- eraser-->
-				<input type="button" id="eraser" style="width: 50px; height: 50px;
-                    background-image: url('pic/eraser.png'); background-size: cover;" />
+				<input type="button" id="btnOfEraser" style="width: 50px; height: 50px;
+                    background-image: url('pic/eraser.png'); background-size: cover;" 
+					onclick="buttonOnClick('eraser')" />
+				<input type="range" value="10" min="1" max="50" id="eraser" style="display: none;" />
 			</div>
             <div>
                 <!-- typingText-->
 				<input type="button" id="typingText" style="width: 50px; height: 50px;
-                    background-image: url('pic/text.png'); background-size: cover;" />
+                    background-image: url('pic/text.png'); background-size: cover;" 
+					onclick="buttonOnClick('text')" />
 			</div>
 			<div>
                 <!-- clear all-->
 				<input type="button" id="clear" style="width: 50px; height: 50px;
-                    background-image: url('pic/clear.png'); background-size: cover;" />
+                    background-image: url('pic/clear.png'); background-size: cover;"
+					onclick="buttonOnClick('clear')" />
 			</div>
             <div>
                 <!-- draw shape-->
 				<input type="button" id="shape" style="width: 50px; height: 50px;
-                    background-image: url('pic/shape.png'); background-size: cover;" />
+                    background-image: url('pic/shape.png'); background-size: cover;"
+					onclick="buttonOnClick('shape')" />
 			</div>
             <div>
                 <!-- undo-->
 				<input type="button" id="undo" style="width: 50px; height: 50px;
-                    background-image: url('pic/undo.png'); background-size: cover;" />
+                    background-image: url('pic/undo.png'); background-size: cover;"
+					onclick="buttonOnClick('undo')" />
 			</div>
             <div>
                 <!-- redo-->
 				<input type="button" id="redo" style="width: 50px; height: 50px;
-                    background-image: url('pic/redo.png'); background-size: cover;" />
+                    background-image: url('pic/redo.png'); background-size: cover;"
+					onclick="buttonOnClick('redo')" />
 			</div>
             <div>
                 <!-- upload image-->
 				<input type="button" id="upload" style="width: 50px; height: 50px;
-                    background-image: url('pic/add-image.png'); background-size: cover;" />
+                    background-image: url('pic/add-image.png'); background-size: cover;"
+					onclick="buttonOnClick('upload')" />
 			</div>
             <div>
                 <!-- download image-->
 				<input type="button" id="download" style="width: 50px; height: 50px;
-                    background-image: url('pic/download.png'); background-size: cover;" />
+                    background-image: url('pic/download.png'); background-size: cover;"
+					onclick="buttonOnClick('download')" />
 			</div>
 		</div>
         <canvas width="1000" height="500" id="canvas"></canvas>
