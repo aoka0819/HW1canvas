@@ -1,59 +1,25 @@
-/*var canvas = document.getElementById('canvas');
-var ctx = canvas.getContext('2d');
-var painting = false;
-var EraserEnabled = false;
-
-getWidthAndHeight();
-
-function getWidthAndHeight() {
-    canvas.width = document.documentElement.clientWidth;
-    canvas.height = document.documentElement.clientHeight;
-    console.log('width:', canvas.width);
-    console.log('height:', canvas.height);
-}
-
-canvas.onmousedown = function (idx) {
-    let x = idx.offsetX;
-    let y = idx.offsetY;
-    painting = true;
-    if(EraserEnabled) {
-        ctx.clearRect(x - 15, y - 15, 30, 30);
-    }
-    startPoint = {x: x, y: y};
-};
-
-canvas.onmousemove = function (idx) {
-    let x = idx.offsetX;
-    let y = idx.offsetY;
-    let newPoint = {x: x, y: y};
-    if(painting == true) {
-        if(EraserEnabled) {
-            ctx.clearRect(x - 15, y - 15, 30, 30);
-        }
-        else {
-            drawLine(startPoint.x, startPoint.y, newPoint.x, newPoint.y);
-        }
-        startPoint = newPoint;
-    }
-};
-
-canvas.onmouseup = function () {
-    painting = false;
-};*/
-
 var options = "painting";
 
 function buttonOnClick (id) {
-	if(id == 'brush') {
+	if(id == "brush") {
 		options = "painting";
 		let display = document.getElementById("brush").style.display;
 		document.getElementById("brush").style.display = (display == "block") ? "none" : "block";
 		document.getElementById("eraser").style.display = "none";
-	} else if(id == 'eraser') {
+		document.getElementById("fontSetting").style.display = "none";
+	} else if(id == "eraser") {
 		options = "erasing";
 		let display = document.getElementById("eraser").style.display;
 		document.getElementById("eraser").style.display = (display == "block") ? "none" : "block";
 		document.getElementById("brush").style.display = "none";
+		document.getElementById("fontSetting").style.display = "none";
+	} else if(id == "text") {
+		options = "typing";
+		// TODO: handle setting of text format
+		let display = document.getElementById("fontSetting").style.display;
+		document.getElementById("fontSetting").style.display = (display == "block") ? "none" : "block";
+		document.getElementById("brush").style.display = "none";
+		document.getElementById("eraser").style.display = "none";
 	}
 }
 
@@ -111,6 +77,16 @@ window.addEventListener("load", () => {
 		ctx.moveTo(mouseX, mouseY);
 	});
 	// 现在在加鼠标移动事件就可以绘图了
+	cvs.addEventListener("mousedown", (e) => {
+		const top = cvs.getBoundingClientRect().top;
+		const left = cvs.getBoundingClientRect().left;
+		const mouseX = e.pageX - left;
+		const mouseY = e.pageY - top;
+		if(options == "typing") {
+			//add Text
+			addText(mouseX, mouseY);
+		}
+	});
 	cvs.addEventListener("mousemove", (e) => {
 		// 同样的方式获取鼠标位置 复制一下
 		const top = cvs.getBoundingClientRect().top;
@@ -126,6 +102,7 @@ window.addEventListener("load", () => {
 				ctx.lineTo(mouseX, mouseY);
 				ctx.stroke();
 			}
+			
 		}
 	});
 	// ok 现在我们需要鼠标按下才绘图
@@ -143,4 +120,41 @@ window.addEventListener("load", () => {
 		ctx.clearRect(0, 0, 1000, 500);
 		// OK了
 	});
+	
 });
+/** 建立一個輸入匡 */
+const addText = (x, y) => {
+    const input = document.createElement("input");
+    input.type = "textarea";
+    input.style.position = "fixed";
+    input.style.left = x - 4 + "px";
+    input.style.top = y - 4 + "px";
+    input.style.zIndex = "100";
+    input.onkeydown = (event) => handleEnter(event, input, x, y);
+    document.body.appendChild(input);
+    input.focus();
+  };
+
+/** 控制完成輸入 */
+  const handleEnter = (event, input, x, y) => {
+    const keyCode = event.keyCode;
+    if (keyCode === 13) {
+      drawText(input.value, x, y);
+      document.body.removeChild(input);
+    }
+  };
+
+/** 完成輸入後繪製到 canvas 上 */
+  function drawText(txt, x, y) {
+    const cvs = document.querySelector("canvas");
+    const ctx = cvs.getContext("2d");
+    ctx.textBaseline = "top";
+    ctx.textAlign = "left";
+    ctx.font = document.getElementById("fontSize").value + "px " + document.getElementById("fontFace").value;
+    
+	var gradient = ctx.createLinearGradient(0, 0, cvs.width, 0);
+	gradient.addColorStop("0 ", document.getElementById("textColor").value);
+// Fill with gradient
+	ctx.fillStyle = gradient;
+	ctx.fillText(txt, x - 4, y - 4);
+  }

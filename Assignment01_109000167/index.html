@@ -34,6 +34,25 @@
 				<input type="button" id="typingText" style="width: 50px; height: 50px;
                     background-image: url('pic/text.png'); background-size: cover;" 
 					onclick="buttonOnClick('text')" />
+				<form style="display: none; background-color: azure; float: left;" id="fontSetting">
+					<br>
+					<label>Font Size</label>
+					<input type="range" value="20" min="10" max="50" id="fontSize" />
+					<br>
+					<label>Text Color</label>
+					<input type="color" value="#000000" id="textColor" />
+					<br>
+					<label>Font Face</label>
+					<select name="fontFace" id="fontFace">
+						<option value="serif">serif</option>
+						<option value="sans-serif">sans-serif</option>
+						<option value="cursive">cursive</option>
+						<option value="fantasy">fantasy</option>
+						<option value="monospace">monospace</option>
+					</select>
+					<br>
+					<button type="button" onclick="closeFontSetting()">Ok</button>
+				</form>
 			</div>
 			<div>
                 <!-- clear all-->
