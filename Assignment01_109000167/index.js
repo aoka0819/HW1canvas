@@ -41,18 +41,16 @@ canvas.onmouseup = function () {
     painting = false;
 };*/
 
-var painting = true;
-var eraserEnabled = false;
+var options = "painting";
 
 function buttonOnClick (id) {
 	if(id == 'brush') {
-		painting = true;
-		eraserEnabled = false;
+		options = "painting";
 		let display = document.getElementById("brush").style.display;
 		document.getElementById("brush").style.display = (display == "block") ? "none" : "block";
 		document.getElementById("eraser").style.display = "none";
 	} else if(id == 'eraser') {
-		eraserEnabled = true;
+		options = "erasing";
 		let display = document.getElementById("eraser").style.display;
 		document.getElementById("eraser").style.display = (display == "block") ? "none" : "block";
 		document.getElementById("brush").style.display = "none";
@@ -103,7 +101,7 @@ window.addEventListener("load", () => {
 		// 可以开始绘图了
 		// 先设置好绘图的画笔颜色和粗细
 		ctx.strokeStyle = colorValue;
-		ctx.lineWidth = (eraserEnabled) ? eraserSize : brushSize;
+		ctx.lineWidth = (options == "erasing") ? eraserSize : brushSize;
 		// 这里再设置一个属性
 		// 绘制的图像是圆角的
 		ctx.lineCap = "round";
@@ -121,11 +119,10 @@ window.addEventListener("load", () => {
 		const mouseY = e.pageY - top;
 		// OK 这样就可以保证按下在开始画了
 		if (flag) {
-			if(eraserEnabled) {
-				console.log("lineWidth now:", ctx.lineWidth);
+			if(options == "erasing") {
 				ctx.clearRect(mouseX, mouseY, ctx.lineWidth, ctx.lineWidth);
 			}
-			else {
+			else if(options == "painting") {
 				ctx.lineTo(mouseX, mouseY);
 				ctx.stroke();
 			}
