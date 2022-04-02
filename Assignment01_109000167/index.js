@@ -77,6 +77,7 @@ window.addEventListener("load", () => {
 		ctx.moveTo(mouseX, mouseY);
 	});
 	// 现在在加鼠标移动事件就可以绘图了
+	// add text box
 	cvs.addEventListener("mousedown", (e) => {
 		const top = cvs.getBoundingClientRect().top;
 		const left = cvs.getBoundingClientRect().left;
@@ -127,8 +128,8 @@ const addText = (x, y) => {
     const input = document.createElement("input");
     input.type = "textarea";
     input.style.position = "fixed";
-    input.style.left = x - 4 + "px";
-    input.style.top = y - 4 + "px";
+    input.style.left = x + 40 + "px";
+    input.style.top = y + 40 + "px";
     input.style.zIndex = "100";
     input.onkeydown = (event) => handleEnter(event, input, x, y);
     document.body.appendChild(input);
@@ -138,7 +139,7 @@ const addText = (x, y) => {
 /** 控制完成輸入 */
   const handleEnter = (event, input, x, y) => {
     const keyCode = event.keyCode;
-    if (keyCode === 13) {
+    if (keyCode == 13) {
       drawText(input.value, x, y);
       document.body.removeChild(input);
     }
