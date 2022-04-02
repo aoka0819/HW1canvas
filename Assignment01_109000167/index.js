@@ -30,24 +30,36 @@ function buttonOnClick (id) {
 		}
 		const cvs = document.querySelector("canvas");
 		const ctx = cvs.getContext("2d");
-		ctx.clearRect(0, 0, 1000, 500);
+		const cvsTemp = document.createElement('canvas'); // 新建一个 canvas 作为缓存 canvas
+    	const ctxTemp = cvsTemp.getContext('2d');
+    	cvsTemp.width = 1000; cvsTemp.height = 500; // 设置宽高
+		//ctx.clearRect(0, 0, 1000, 500);
 		if(step >= 0) {
 			var canvas = new Image();
 			canvas.src = canvasList[step];
 			canvas.onload = function() {
-				ctx.drawImage(canvas, 0, 0);
+				ctxTemp.drawImage(canvas, 0, 0);
+				ctx.clearRect(0, 0, 1000, 500);
+				ctx.drawImage(cvsTemp, 0, 0);
 			}
+		} else {
+			ctx.clearRect(0, 0, 1000, 500);
 		}
 	} else if(id == "redo") {
 		if(step < canvasList.length - 1) {
 			step++;
 			const cvs = document.querySelector("canvas");
 			const ctx = cvs.getContext("2d");
-			ctx.clearRect(0, 0, 1000, 500);
+			const cvsTemp = document.createElement('canvas'); // 新建一个 canvas 作为缓存 canvas
+    		const ctxTemp = cvsTemp.getContext('2d');
+    		cvsTemp.width = 1000; cvsTemp.height = 500; // 设置宽高
+			//ctx.clearRect(0, 0, 1000, 500);
 			var canvas = new Image();
 			canvas.src = canvasList[step];
 			canvas.onload = function() {
-				ctx.drawImage(canvas, 0, 0);
+				ctxTemp.drawImage(canvas, 0, 0);
+				ctx.clearRect(0, 0, 1000, 500);
+				ctx.drawImage(cvsTemp, 0, 0);
 			}
 		}
 	}
@@ -150,6 +162,7 @@ window.addEventListener("load", () => {
 	clear.addEventListener("click", () => {
 		// clearRect方法可以清空一定区域内的内容 填写的值为x坐标 y坐标 清除的宽度 和 高度 我们全部要清除 所以直接从左上角开始 宽高为画布的宽高了 再来试试
 		ctx.clearRect(0, 0, 1000, 500);
+		history();
 		// OK了
 	});
 	
@@ -177,7 +190,7 @@ const addText = (x, y) => {
   };
 
 /** 完成輸入後繪製到 canvas 上 */
-  function drawText(txt, x, y) {
+function drawText(txt, x, y) {
     const cvs = document.querySelector("canvas");
     const ctx = cvs.getContext("2d");
     ctx.textBaseline = "top";
@@ -189,6 +202,7 @@ const addText = (x, y) => {
 // Fill with gradient
 	ctx.fillStyle = gradient;
 	ctx.fillText(txt, x - 4, y - 4);
+	history();
   }
 
   function history() {
@@ -198,5 +212,5 @@ const addText = (x, y) => {
 	  }
 	  const cvs = document.querySelector("canvas");
 	  canvasList.push(cvs.toDataURL());
-	  //console.log("step now:",step);
+	  console.log("step now:",step);
   }
