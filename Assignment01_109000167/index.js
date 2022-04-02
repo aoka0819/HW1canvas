@@ -1,4 +1,6 @@
 var options = "painting";
+var step = -1;
+var canvasList = [];
 
 function buttonOnClick (id) {
 	if(id == "brush") {
@@ -22,6 +24,32 @@ function buttonOnClick (id) {
 		document.getElementById("fontSetting").style.display = (display == "block") ? "none" : "block";
 		document.getElementById("brush").style.display = "none";
 		document.getElementById("eraser").style.display = "none";
+	} else if(id == "undo") {
+		if(step >= 0) {
+			step--;
+		}
+		const cvs = document.querySelector("canvas");
+		const ctx = cvs.getContext("2d");
+		ctx.clearRect(0, 0, 1000, 500);
+		if(step >= 0) {
+			var canvas = new Image();
+			canvas.src = canvasList[step];
+			canvas.onload = function() {
+				ctx.drawImage(canvas, 0, 0);
+			}
+		}
+	} else if(id == "redo") {
+		if(step < canvasList.length - 1) {
+			step++;
+			const cvs = document.querySelector("canvas");
+			const ctx = cvs.getContext("2d");
+			ctx.clearRect(0, 0, 1000, 500);
+			var canvas = new Image();
+			canvas.src = canvasList[step];
+			canvas.onload = function() {
+				ctx.drawImage(canvas, 0, 0);
+			}
+		}
 	}
 }
 
@@ -114,6 +142,7 @@ window.addEventListener("load", () => {
 	cvs.addEventListener("mouseup", () => {
 		// flag为fasle即可
 		flag = false;
+		history();
 	});
 	// 现在实现清空画布
 	// 获取按钮
@@ -160,4 +189,14 @@ const addText = (x, y) => {
 // Fill with gradient
 	ctx.fillStyle = gradient;
 	ctx.fillText(txt, x - 4, y - 4);
+  }
+
+  function history() {
+	  step++;
+	  if(step < canvasList.length) {
+		  canvasList.length = step;
+	  }
+	  const cvs = document.querySelector("canvas");
+	  canvasList.push(cvs.toDataURL());
+	  //console.log("step now:",step);
   }
