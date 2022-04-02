@@ -2,6 +2,8 @@ var options = "painting";
 var step = -1;
 var canvasList = [];
 var imgUploaded = new Image();
+var startX = 0;
+var startY = 0;
 
 function buttonOnClick (id) {
 	if(id == "brush") {
@@ -29,7 +31,7 @@ function buttonOnClick (id) {
 		document.getElementById("eraser").style.display = "none";
 		document.getElementById("shapeSelection").style.display = "none";
 	} else if(id == "shape") {
-		options = "shapDrawing";
+		options = "shapeDrawing";
 		let display = document.getElementById("shapeSelection").style.display;
 		document.getElementById("shapeSelection").style.display = (display == "block") ? "none" : "block";
 		document.getElementById("brush").style.display = "none";
@@ -127,6 +129,7 @@ window.addEventListener("load", () => {
 		// 这样就获取到了
 		// 可以开始绘图了
 		// 先设置好绘图的画笔颜色和粗细
+		ctx.fillStyle = colorValue;
 		ctx.strokeStyle = colorValue;
 		ctx.lineWidth = (options == "erasing") ? eraserSize : brushSize;
 		// 这里再设置一个属性
@@ -136,6 +139,7 @@ window.addEventListener("load", () => {
 		ctx.beginPath();
 		// 然后确定开始绘图的起点位置
 		ctx.moveTo(mouseX, mouseY);
+		
 	});
 	// 现在在加鼠标移动事件就可以绘图了
 	// add text box
@@ -150,6 +154,9 @@ window.addEventListener("load", () => {
 		} else if(options == "picture") {
 			//console.log("is found?", imgUploaded.src);
 			ctx.drawImage(imgUploaded, mouseX, mouseY);
+		} else if(options == "shapeDrawing") {
+			startX = mouseX;
+			startY = mouseY;
 		}
 	});
 	cvs.addEventListener("mousemove", (e) => {
@@ -165,15 +172,44 @@ window.addEventListener("load", () => {
 			} else if(options == "painting") {
 				ctx.lineTo(mouseX, mouseY);
 				ctx.stroke();
+				//ctx.rect(mouseX, mouseY, 50, 50);
+				//ctx.rect(startX, startY + mouseX - startX, startX + mouseY - startY, mouseY);
 			} else if(options == "shapeDrawing") {
+				
 				let shapeNow = document.getElementById("shape").value;
+				//alert(shapeNow);
+				if(shapeNow == "circle") {
+					ctx.beginPath;
+					ctx.arc(mouseX, mouseY, 200, 0, 2 * Math.PI);
+					ctx.closePath;
+					ctx.fill();
+				} else if(shapeNow == "triangle") {
+					ctx.beginPath();
+                	ctx.moveTo(startX, startY);
+                	ctx.lineTo(mouseX + (mouseX - startX)/2, mouseY - startY);
+                	ctx.lineTo(mouseX - (mouseX - startX)/2, mouseY - startY);
+					ctx.lineTo(startX, startY);
+					//ctx.moveTo(100, 100);
+					//ctx.lineTo(400, 400);
+					//ctx.lineTo(100, 400);
+					//ctx.lineTo(100, 100);
+                	ctx.closePath();
+                	ctx.fill();
+				} else if(shapeNow == "rectangle") {
+					//console.log("rectangle drawing", ctxTemp.lineWidth);
+					ctx.fillRect(startX, startY, mouseX - startX, mouseY - startY);
+				}
 			}
-			
 		}
 	});
 	// ok 现在我们需要鼠标按下才绘图
 	// 用最笨的方法 立一个flag 哈哈
 	// 现在鼠标弹起了还绘图 加一个鼠标弹起事件
+	cvs.addEventListener("mouseleave", () => {
+		// flag为fasle即可
+		flag = false;
+		history();
+	});
 	cvs.addEventListener("mouseup", () => {
 		// flag为fasle即可
 		flag = false;
