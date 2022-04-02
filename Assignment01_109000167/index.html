@@ -80,9 +80,11 @@
 			</div>
             <div>
                 <!-- upload image-->
-				<input type="button" id="upload" style="width: 50px; height: 50px;
+				<input type="button" id="uploadButton" style="width: 50px; height: 50px;
                     background-image: url('pic/add-image.png'); background-size: cover;"
-					onclick="buttonOnClick('upload')" />
+					onclick="document.getElementById('upload').click()" />
+				<input type="file" accept="image/png, image/jpg, image/jpeg" id="upload" style="display: none;"
+					onclick="buttonOnClick('upload')" onchange="handleImage(event)"/>
 			</div>
             <div>
                 <!-- download image-->

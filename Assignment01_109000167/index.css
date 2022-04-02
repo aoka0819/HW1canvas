@@ -18,7 +18,7 @@ canvas {
     float: left;
 	margin-top: 40px;
     margin-left: 40px;
-	border: 1px solid #000;
+	border: 15px ridge rgb(125, 81, 48);
     background-image: url(pic/paper.jpg);
 }
 

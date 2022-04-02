@@ -1,6 +1,7 @@
 var options = "painting";
 var step = -1;
 var canvasList = [];
+var imgUploaded = new Image();
 
 function buttonOnClick (id) {
 	if(id == "brush") {
@@ -62,6 +63,8 @@ function buttonOnClick (id) {
 				ctx.drawImage(cvsTemp, 0, 0);
 			}
 		}
+	} else if(id == "upload") {
+		options = "picture";
 	}
 }
 
@@ -70,6 +73,7 @@ window.addEventListener("load", () => {
 	const color = document.querySelector("#color");
 	const brush = document.querySelector("#brush");
 	const eraser = document.querySelector("#eraser");
+	const imgUpload = document.getElementById('upload');
 	// 设置初始的画笔颜色和粗细 画图时用的
 	let colorValue = color.value,
 		brushSize = brush.value,
@@ -128,6 +132,9 @@ window.addEventListener("load", () => {
 		if(options == "typing") {
 			//add Text
 			addText(mouseX, mouseY);
+		} else if(options == "picture") {
+			//console.log("is found?", imgUploaded.src);
+			ctx.drawImage(imgUploaded, mouseX, mouseY);
 		}
 	});
 	cvs.addEventListener("mousemove", (e) => {
@@ -140,8 +147,7 @@ window.addEventListener("load", () => {
 		if (flag) {
 			if(options == "erasing") {
 				ctx.clearRect(mouseX, mouseY, ctx.lineWidth, ctx.lineWidth);
-			}
-			else if(options == "painting") {
+			} else if(options == "painting") {
 				ctx.lineTo(mouseX, mouseY);
 				ctx.stroke();
 			}
@@ -212,5 +218,13 @@ function drawText(txt, x, y) {
 	  }
 	  const cvs = document.querySelector("canvas");
 	  canvasList.push(cvs.toDataURL());
-	  console.log("step now:",step);
+	  //console.log("step now:",step);
   }
+
+  function handleImage(e){
+    var reader = new FileReader();
+    reader.onload = function(event){
+        imgUploaded.src = event.target.result;
+    }
+    reader.readAsDataURL(e.target.files[0]);     
+}
