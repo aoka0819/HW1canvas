@@ -15,7 +15,9 @@ function buttonOnClick (id) {
 		document.getElementById("fontSetting").style.display = "none";
 	} else if(id == "text") {
 		options = "typing";
-		// TODO: handle setting of text format
+		let element = document.getElementById("page");
+		element.classList.remove("default");
+		element.classList.add("text");
 		let display = document.getElementById("fontSetting").style.display;
 		document.getElementById("fontSetting").style.display = (display == "block") ? "none" : "block";
 		document.getElementById("brush").style.display = "none";
