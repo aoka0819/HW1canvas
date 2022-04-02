@@ -10,12 +10,14 @@ function buttonOnClick (id) {
 		document.getElementById("brush").style.display = (display == "block") ? "none" : "block";
 		document.getElementById("eraser").style.display = "none";
 		document.getElementById("fontSetting").style.display = "none";
+		document.getElementById("shapeSelection").style.display = "none";
 	} else if(id == "eraser") {
 		options = "erasing";
 		let display = document.getElementById("eraser").style.display;
 		document.getElementById("eraser").style.display = (display == "block") ? "none" : "block";
 		document.getElementById("brush").style.display = "none";
 		document.getElementById("fontSetting").style.display = "none";
+		document.getElementById("shapeSelection").style.display = "none";
 	} else if(id == "text") {
 		options = "typing";
 		let element = document.getElementById("page");
@@ -25,6 +27,14 @@ function buttonOnClick (id) {
 		document.getElementById("fontSetting").style.display = (display == "block") ? "none" : "block";
 		document.getElementById("brush").style.display = "none";
 		document.getElementById("eraser").style.display = "none";
+		document.getElementById("shapeSelection").style.display = "none";
+	} else if(id == "shape") {
+		options = "shapDrawing";
+		let display = document.getElementById("shapeSelection").style.display;
+		document.getElementById("shapeSelection").style.display = (display == "block") ? "none" : "block";
+		document.getElementById("brush").style.display = "none";
+		document.getElementById("eraser").style.display = "none";
+		document.getElementById("fontSetting").style.display = "none";
 	} else if(id == "undo") {
 		if(step >= 0) {
 			step--;
@@ -65,6 +75,11 @@ function buttonOnClick (id) {
 		}
 	} else if(id == "upload") {
 		options = "picture";
+	} else if(id == "download") {
+		var link = document.createElement('a');
+  		link.download = 'filename.png';
+  		link.href = canvasList[step];
+  		link.click();
 	}
 }
 
@@ -146,10 +161,12 @@ window.addEventListener("load", () => {
 		// OK 这样就可以保证按下在开始画了
 		if (flag) {
 			if(options == "erasing") {
-				ctx.clearRect(mouseX, mouseY, ctx.lineWidth, ctx.lineWidth);
+				ctx.clearRect(mouseX - ctx.lineWidth , mouseY - ctx.lineWidth, ctx.lineWidth, ctx.lineWidth);
 			} else if(options == "painting") {
 				ctx.lineTo(mouseX, mouseY);
 				ctx.stroke();
+			} else if(options == "shapeDrawing") {
+				let shapeNow = document.getElementById("shape").value;
 			}
 			
 		}
