@@ -10,38 +10,32 @@ function buttonOnClick (id) {
 	
 	if(id == "brush") {
 		options = "painting";
-		let display = document.getElementById("brush").style.display;
-		document.getElementById("brush").style.display = (display == "block") ? "none" : "block";
+		document.getElementById("brush").style.display = "block";
 		document.getElementById("eraser").style.display = "none";
 		document.getElementById("fontSetting").style.display = "none";
 		document.getElementById("shapeSelection").style.display = "none";
 	} else if(id == "eraser") {
 		options = "erasing";
-		let display = document.getElementById("eraser").style.display;
-		document.getElementById("eraser").style.display = (display == "block") ? "none" : "block";
+		document.getElementById("eraser").style.display = "block";
 		document.getElementById("brush").style.display = "none";
 		document.getElementById("fontSetting").style.display = "none";
 		document.getElementById("shapeSelection").style.display = "none";
 	} else if(id == "text") {
 		options = "typing";
-		let display = document.getElementById("fontSetting").style.display;
-		document.getElementById("fontSetting").style.display = (display == "block") ? "none" : "block";
+		document.getElementById("fontSetting").style.display = "block";
 		document.getElementById("brush").style.display = "none";
 		document.getElementById("eraser").style.display = "none";
 		document.getElementById("shapeSelection").style.display = "none";
 	} else if(id == "shape") {
 		options = "shapeDrawing";
-		let display = document.getElementById("shapeSelection").style.display;
-		document.getElementById("shapeSelection").style.display = (display == "block") ? "none" : "block";
+		document.getElementById("shapeSelection").style.display = "block";
 		document.getElementById("brush").style.display = "none";
 		document.getElementById("eraser").style.display = "none";
 		document.getElementById("fontSetting").style.display = "none";
 	} else if(id == "undo") {
-		console.log("step: %d", step);
 		if(step >= 0) {
 			step--;
 		}
-		console.log("step: %d", step);
 		// create new temp canvas
 		const cvs = document.querySelector("canvas");
 		const ctx = cvs.getContext("2d");
@@ -77,6 +71,10 @@ function buttonOnClick (id) {
 		}
 	} else if(id == "upload") {
 		options = "picture";
+		document.getElementById("brush").style.display = "none";
+		document.getElementById("eraser").style.display = "none";
+		document.getElementById("fontSetting").style.display = "none";
+		document.getElementById("shapeSelection").style.display = "none";
 	} else if(id == "download") {
 		var link = document.createElement('a');
   		link.download = 'webCanvas.png';
@@ -161,32 +159,63 @@ window.addEventListener("load", () => {
 		const mouseY = e.pageY - top;
 		if(flag) {
 			if(options == "erasing") {
-				ctx.clearRect(mouseX - ctx.lineWidth , mouseY - ctx.lineWidth, ctx.lineWidth, ctx.lineWidth);
+				ctx.clearRect(mouseX, mouseY, ctx.lineWidth, ctx.lineWidth);
 			} else if(options == "painting") {
 				ctx.lineTo(mouseX, mouseY);
 				ctx.stroke();
 			} else if(options == "shapeDrawing") {
 				let shapeNow = document.getElementById("shape").value;
-				if(shapeNow == "circle") {
-					ctx.beginPath;
-					ctx.arc(mouseX, mouseY, 200, 0, 2 * Math.PI);
-					ctx.closePath;
-					ctx.fill();
-				} else if(shapeNow == "triangle") {
-					ctx.beginPath();
-                	ctx.moveTo(startX, startY);
-                	ctx.lineTo(mouseX + (mouseX - startX)/2, mouseY - startY);
-                	ctx.lineTo(mouseX - (mouseX - startX)/2, mouseY - startY);
-					ctx.lineTo(startX, startY);
-					//ctx.moveTo(100, 100);
-					//ctx.lineTo(400, 400);
-					//ctx.lineTo(100, 400);
-					//ctx.lineTo(100, 100);
-                	ctx.closePath();
-                	ctx.fill();
-				} else if(shapeNow == "rectangle") {
-					ctx.fillRect(startX, startY, mouseX - startX, mouseY - startY);
+				const cvsTemp = document.createElement('canvas');
+    			const ctxTemp = cvsTemp.getContext('2d');
+				
+    			cvsTemp.width = 1000; cvsTemp.height = 500;
+				if(step >= 0) {
+					var canvas = new Image();
+					canvas.src = canvasList[step];
+					canvas.onload = function() {
+						ctxTemp.drawImage(canvas, 0, 0);
+						ctxTemp.fillStyle = colorValue;
+						ctxTemp.strokeStyle = colorValue;
+						if(shapeNow == "circle") {
+							ctxTemp.beginPath;
+							ctxTemp.arc(startX, startY, Math.sqrt(Math.pow((mouseX-startX), 2) + Math.pow((mouseY-startY), 2)), 0, 2 * Math.PI);
+							ctxTemp.closePath;
+							ctxTemp.fill();
+						} else if(shapeNow == "triangle") {
+							ctxTemp.beginPath();
+							ctxTemp.moveTo(startX, startY);
+							ctxTemp.lineTo(startX + (mouseX - startX)/2, mouseY);
+							ctxTemp.lineTo(startX - (mouseX - startX)/2, mouseY);
+							ctxTemp.closePath();
+							ctxTemp.fill();
+						} else if(shapeNow == "rectangle") {
+							ctxTemp.fillRect(startX, startY, mouseX - startX, mouseY - startY);
+						}
+						ctx.clearRect(0, 0, 1000, 500);
+						ctx.drawImage(cvsTemp, 0, 0);
+					}
+				} else {
+					ctxTemp.fillStyle = colorValue;
+						ctxTemp.strokeStyle = colorValue;
+						if(shapeNow == "circle") {
+							ctxTemp.beginPath;
+							ctxTemp.arc(startX, startY, Math.sqrt(Math.pow((mouseX-startX), 2) + Math.pow((mouseY-startY), 2)), 0, 2 * Math.PI);
+							ctxTemp.closePath;
+							ctxTemp.fill();
+						} else if(shapeNow == "triangle") {
+							ctxTemp.beginPath();
+							ctxTemp.moveTo(startX, startY);
+							ctxTemp.lineTo(startX + (mouseX - startX)/2, mouseY);
+							ctxTemp.lineTo(startX - (mouseX - startX)/2, mouseY);
+							ctxTemp.closePath();
+							ctxTemp.fill();
+						} else if(shapeNow == "rectangle") {
+							ctxTemp.fillRect(startX, startY, mouseX - startX, mouseY - startY);
+						}
+						ctx.clearRect(0, 0, 1000, 500);
+						ctx.drawImage(cvsTemp, 0, 0);
 				}
+				
 			}
 		}
 	});
