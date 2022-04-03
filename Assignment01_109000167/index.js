@@ -76,7 +76,7 @@ function buttonOnClick (id) {
 		document.getElementById("fontSetting").style.display = "none";
 		document.getElementById("shapeSelection").style.display = "none";
 	} else if(id == "download") {
-		var link = document.createElement('a');
+		var link = document.createElement('dlFile');
   		link.download = 'webCanvas.png';
   		link.href = canvasList[step];
   		link.click();
@@ -223,18 +223,18 @@ window.addEventListener("load", () => {
 	cvs.addEventListener("mouseleave", () => {
 		if(flag) {
 			flag = false;
-			history();
+			recordHistory();
 		}
 	});
 	// event mouse up on canvas
 	cvs.addEventListener("mouseup", () => {
 		flag = false;
-		history();
+		recordHistory();
 	});
 	const clear = document.querySelector("#clear");
 	clear.addEventListener("click", () => {
 		ctx.clearRect(0, 0, 1000, 500);
-		history();
+		recordHistory();
 	});
 	
 });
@@ -269,10 +269,10 @@ function drawText(txt, x, y) {
 	// Fill with gradient
 	ctx.fillStyle = gradient;
 	ctx.fillText(txt, x - 4, y - 4);
-	history();
+	recordHistory();
 }
 
-function history() {
+function recordHistory() {
 	step++;
 	if(step < canvasList.length) {
 		canvasList.length = step;
